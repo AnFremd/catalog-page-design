@@ -36,9 +36,11 @@ interface SectionHeaderTitleProps {
   canEdit: boolean;
   onRename: (newName: string) => void;
   embedded?: boolean;
+  /** На мобильных: один тап открывает редактирование (двойной тап ненадёжен) */
+  editOnSingleTap?: boolean;
 }
 
-function SectionHeaderTitle({ name, canEdit, onRename, embedded = false }: SectionHeaderTitleProps) {
+function SectionHeaderTitle({ name, canEdit, onRename, embedded = false, editOnSingleTap = false }: SectionHeaderTitleProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(name);
 
@@ -47,6 +49,12 @@ function SectionHeaderTitle({ name, canEdit, onRename, embedded = false }: Secti
     const trimmed = value.trim();
     if (trimmed) onRename(trimmed);
     else setValue(name);
+  };
+
+  const startEditing = () => {
+    if (!canEdit) return;
+    setValue(name);
+    setIsEditing(true);
   };
 
   const content =
@@ -71,13 +79,10 @@ function SectionHeaderTitle({ name, canEdit, onRename, embedded = false }: Secti
         <span
           className={`font-['PT_Root_UI_VF:Medium',sans-serif] text-[14px] text-[#222934] truncate ${
             canEdit ? "cursor-text" : "cursor-default"
-          }`}
-          onDoubleClick={() => {
-            if (!canEdit) return;
-            setValue(name);
-            setIsEditing(true);
-          }}
-          title={name}
+          } ${editOnSingleTap && canEdit ? "touch-manipulation" : ""}`}
+          onDoubleClick={editOnSingleTap ? undefined : startEditing}
+          onClick={editOnSingleTap ? startEditing : undefined}
+          title={canEdit ? "Изменить название" : name}
         >
           {name}
         </span>
@@ -497,26 +502,15 @@ export default function App() {
                     <ChevronLeft className="size-5 shrink-0" aria-hidden />
                   )}
                 </button>
-                {isMobile ? (
-                  <button
-                    type="button"
-                    className="flex flex-1 min-w-0 items-center text-left touch-manipulation min-h-[44px]"
-                    onClick={() => setIsSectionDrawerOpen(true)}
-                  >
-                    <span className="font-['PT_Root_UI_VF:Medium',sans-serif] text-[14px] text-[#222934] truncate">
-                      {sectionDisplayName}
-                    </span>
-                  </button>
-                ) : (
-                  <div className="flex flex-1 min-w-0 items-center justify-between">
-                    <SectionHeaderTitle
-                      name={sectionDisplayName}
-                      canEdit={isCatalogInherited && !!selectedSection}
-                      onRename={(newName) => selectedSection && handleSectionNameChange(selectedSection.id, newName)}
-                      embedded
-                    />
-                  </div>
-                )}
+                <div className="flex flex-1 min-w-0 items-center justify-between min-h-[44px] md:min-h-0">
+                  <SectionHeaderTitle
+                    name={sectionDisplayName}
+                    canEdit={isCatalogInherited && !!selectedSection}
+                    onRename={(newName) => selectedSection && handleSectionNameChange(selectedSection.id, newName)}
+                    embedded
+                    editOnSingleTap={isMobile}
+                  />
+                </div>
               </div>
               <CatalogTable
                 products={productsForSection}
