@@ -1,0 +1,38 @@
+/* PT Root UI — fallback to system UI for catalog interface */
+@font-face {
+  font-family: 'PT Root UI';
+  src: local('PT Root UI'), local('PTRootUI-Regular');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* PT Root UI VF — variable font (Figma spec) */
+@font-face {
+  font-family: 'PT Root UI VF';
+  src: url('https://fonts.cdnfonts.com/s/107249/PT-Root-UI_VF.woff') format('woff');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PT Root UI VF:Regular';
+  src: url('https://fonts.cdnfonts.com/s/107249/PT-Root-UI_Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PT Root UI VF:Bold';
+  src: url('https://fonts.cdnfonts.com/s/107249/PT-Root-UI_Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Map Figma font names to a single family for Tailwind arbitrary values */
+body {
+  --font-pt-root: 'PT Root UI', system-ui, -apple-system, sans-serif;
+}

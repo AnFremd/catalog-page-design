@@ -1,0 +1,556 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+
+  /* базовые токены из design‑системы */
+  --text-size-s: 12px;
+  --text-size-m: 14px;
+  --text-size-l: 16px;
+  --text-size-xl: 20px;
+
+  --text-weight-s: 400;
+  --text-weight-m: 500;
+  --text-weight-l: 700;
+
+  --padding-xs: 2px;
+  --padding-s: 4px;
+  --padding-m: 8px;
+  --padding-l: 12px;
+  --padding-xl: 16px;
+  --padding-xxl: 24px;
+  --padding-3xl: 32px;
+
+  --radius-xs: 4px;
+  --radius-s: 6px;
+  --radius-m: 8px;
+  --radius-l: 12px;
+  --radius-xl: 16px;
+  --radius-xxl: 24px;
+  --Padding-menu-block: 4px;
+  --toast_padding: 12px;
+  --toast_radius: 12px;
+
+  --shadow-general: 0px 2px 8px 0px rgba(22, 34, 51, 0.04),
+    0px 12px 24px 0px rgba(22, 34, 51, 0.06);
+
+  --field-cover: oklch(100% 0 0);
+  --field-core: oklch(97.59% 0.003 264.54);
+  --snow-white: oklch(100% 0 0 / 8%);
+
+  --black-500: oklch(27.91% 0.023 259.35);
+  --black-400: oklch(39.59% 0.028 260.62);
+  --black-300: oklch(32.06% 0.04 254.68 / 80%);
+
+  --navy-600: oklch(30.54% 0.095 259.07 / 56%);
+  --navy-500: oklch(30.54% 0.095 259.07 / 40%);
+  --navy-400: oklch(30.54% 0.095 259.07 / 28%);
+  --navy-300: oklch(30.54% 0.095 259.07 / 16%);
+  --navy-200: oklch(30.54% 0.095 259.07 / 8%);
+  --navy-100: oklch(30.54% 0.095 259.07 / 4%);
+
+  --red-700: oklch(57.26% 0.191 27.07);
+  --red-600: oklch(59.81% 0.201 27.06);
+  --red-500: oklch(62.59% 0.21 27.26);
+  --red-400: oklch(62.59% 0.21 27.26 / 28%);
+  --red-300: oklch(62.59% 0.21 27.26 / 16%);
+  --red-200: oklch(62.59% 0.21 27.26 / 8%);
+
+  --brand-700: oklch(52.35% 0.18 256.2);
+  --brand-600: oklch(55.93% 0.19 256.1);
+  --brand-500: oklch(61.31% 0.22 256.3);
+  --brand-400: oklch(61.31% 0.22 256.3 / 28%);
+  --brand-300: oklch(61.31% 0.22 256.3 / 16%);
+  --brand-200: oklch(61.31% 0.22 256.3 / 8%);
+
+  --orange-700: oklch(68.43% 0.165 54.09);
+  --orange-600: oklch(71.15% 0.173 53.63);
+  --orange-500: oklch(74.01% 0.18 53.67);
+  --orange-400: oklch(74.01% 0.18 53.67 / 28%);
+  --orange-300: oklch(74.01% 0.18 53.67 / 16%);
+  --orange-200: oklch(74.01% 0.18 53.67 / 8%);
+
+  --green-700: oklch(58.62% 0.17 143.03);
+  --green-600: oklch(61.39% 0.172 143.12);
+  --green-500: oklch(65.21% 0.179 143.18);
+  --green-400: oklch(65.21% 0.179 143.18 / 28%);
+  --green-300: oklch(65.21% 0.179 143.18 / 16%);
+  --green-200: oklch(65.21% 0.179 143.18 / 8%);
+
+  --general-primary: var(--black-500);
+  --general-invert: var(--field-cover);
+  --general-secondary: var(--black-300);
+  --general-ghost: var(--navy-600);
+  --general-disable: var(--navy-400);
+  --general-brand: var(--brand-500);
+  --general-brand-hover: var(--brand-600);
+  --general-danger: var(--red-500);
+  --general-warning: var(--orange-500);
+  --general-success: var(--green-500);
+  --general-white: var(--field-cover);
+
+  --text-primary: var(--general-primary);
+  --text-secondary: var(--general-secondary);
+  --text-ghost: var(--general-ghost);
+
+  --border-menu: var(--navy-100);
+  --border-secondary: var(--navy-200);
+  --border-primary: var(--navy-300);
+  --border-hover: var(--navy-500);
+  --border-select: var(--brand-500);
+  --border-danger: var(--red-500);
+  --border-succsess: var(--green-500);
+
+  --bg-base-cover: var(--field-cover);
+  --background-base-cover: var(--bg-base-cover);
+  --bg-base-core: var(--field-core);
+  --bg-base-primary: var(--black-500);
+  --bg-base-primary-hover: var(--black-400);
+  --bg-base-primary-select: var(--black-300);
+  --bg-base-secondary: var(--navy-200);
+  --bg-base-secondary-hover: var(--navy-300);
+  --bg-base-secondary-select: var(--navy-400);
+  --bg-base-ghost-hover: var(--navy-100);
+  --bg-base-ghost-select: var(--navy-200);
+  --bg-base-disable: var(--navy-100);
+
+  --bg-brand-primary: var(--brand-500);
+  --bg-brand-primary-hover: var(--brand-600);
+  --bg-brand-primary-select: var(--brand-700);
+  --bg-brand-secondary: var(--brand-200);
+  --bg-brand-secondary-hover: var(--brand-300);
+  --bg-brand-secondary-select: var(--brand-400);
+
+  --bg-danger-primary: var(--red-500);
+  --bg-danger-primary-hover: var(--red-600);
+  --bg-danger-primary-select: var(--red-700);
+  --bg-danger-secondary: var(--red-200);
+  --bg-danger-secondary-hover: var(--red-300);
+  --bg-danger-secondary-select: var(--red-400);
+
+  --bg-warning-primary: var(--orange-500);
+  --bg-warning-primary-hover: var(--orange-600);
+  --bg-warning-primary-select: var(--orange-700);
+  --bg-warning-secondary: var(--orange-200);
+  --bg-warning-secondary-hover: var(--orange-300);
+  --bg-warning-secondary-select: var(--orange-400);
+
+  --bg-success-primary: var(--green-500);
+  --bg-success-primary-hover: var(--green-600);
+  --bg-success-primary-select: var(--green-700);
+  --bg-success-secondary: var(--green-200);
+  --bg-success-secondary-hover: var(--green-300);
+  --bg-success-secondary-select: var(--green-400);
+
+  --bg-toast-danger: oklch(0.9651 0.0141 22.76);
+  --bg-toast-warning: oklch(0.9758 0.0151 61.35);
+  --bg-toast-success: oklch(0.9699 0.0152 145.46);
+  --bg-toast-brand: oklch(0.9656 0.0171 248.01);
+  --bg-toast-info: oklch(1 0 0);
+
+  /* шадовские переменные как алиасы на новые токены */
+  --background: var(--bg-base-cover);
+  --foreground: var(--text-primary);
+  --card: var(--bg-base-cover);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-base-cover);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--bg-brand-primary);
+  --primary-foreground: var(--general-white);
+  --secondary: var(--bg-base-secondary);
+  --secondary-foreground: var(--general-primary);
+  --muted: var(--navy-100);
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--bg-base-secondary);
+  --accent-foreground: var(--general-primary);
+  --destructive: var(--bg-danger-primary);
+  --destructive-foreground: var(--general-white);
+  --border: var(--border-primary);
+  --input: transparent;
+  --input-background: var(--bg-base-core);
+  --switch-background: var(--navy-300);
+  --font-weight-medium: var(--text-weight-m);
+  --font-weight-normal: var(--text-weight-s);
+  --ring: var(--brand-500);
+  --chart-1: var(--brand-500);
+  --chart-2: var(--green-500);
+  --chart-3: var(--orange-500);
+  --chart-4: var(--red-500);
+  --chart-5: var(--navy-500);
+  --radius: var(--radius-m);
+  --sidebar: var(--bg-base-cover);
+  --sidebar-foreground: var(--text-primary);
+  --sidebar-primary: var(--general-primary);
+  --sidebar-primary-foreground: var(--general-white);
+  --sidebar-accent: var(--bg-base-secondary);
+  --sidebar-accent-foreground: var(--general-primary);
+  --sidebar-border: var(--border-primary);
+  --sidebar-ring: var(--brand-500);
+}
+
+.dark {
+  --background: var(--black-500);
+  --foreground: var(--general-white);
+  --card: var(--black-500);
+  --card-foreground: var(--general-white);
+  --popover: var(--black-500);
+  --popover-foreground: var(--general-white);
+  --primary: var(--general-white);
+  --primary-foreground: var(--black-500);
+  --secondary: var(--navy-300);
+  --secondary-foreground: var(--general-white);
+  --muted: var(--navy-300);
+  --muted-foreground: var(--navy-200);
+  --accent: var(--navy-300);
+  --accent-foreground: var(--general-white);
+  --destructive: var(--bg-danger-primary);
+  --destructive-foreground: var(--general-white);
+  --border: var(--navy-300);
+  --input: var(--navy-300);
+  --ring: var(--brand-500);
+  --font-weight-medium: var(--text-weight-m);
+  --font-weight-normal: var(--text-weight-s);
+  --chart-1: var(--brand-500);
+  --chart-2: var(--green-500);
+  --chart-3: var(--orange-500);
+  --chart-4: var(--red-500);
+  --chart-5: var(--navy-500);
+  --sidebar: var(--black-500);
+  --sidebar-foreground: var(--general-white);
+  --sidebar-primary: var(--general-white);
+  --sidebar-primary-foreground: var(--black-500);
+  --sidebar-accent: var(--navy-300);
+  --sidebar-accent-foreground: var(--general-white);
+  --sidebar-border: var(--navy-300);
+  --sidebar-ring: var(--brand-500);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    line-height: 120%;
+  }
+
+  /**
+  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
+  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
+  */
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+}
+
+/* Design tokens and toast/scroll styles from Figma spec */
+
+@property --transform-origin {
+  syntax: "<length>#";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --nested-dialogs {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --anchor-width {
+  syntax: "*";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --spinner-offset {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --available-height {
+  syntax: "*";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --scroll-height {
+  syntax: "*";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --toast-swipe-movement-y {
+  syntax: "*";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --toast-index {
+  syntax: "*";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --toast-offset-y {
+  syntax: "*";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --toast-swipe-movement-x {
+  syntax: "*";
+  inherits: true;
+  initial-value: 0;
+}
+
+:root {
+  --text-size-s: 12px;
+  --text-size-m: 14px;
+  --text-size-l: 16px;
+  --text-size-xl: 20px;
+
+  --text-weight-s: 400;
+  --text-weight-m: 500;
+  --text-weight-l: 700;
+
+  --select-width: auto;
+
+  --padding-xs: 2px;
+  --padding-s: 4px;
+  --padding-m: 8px;
+  --padding-l: 12px;
+  --padding-xl: 16px;
+  --padding-xxl: 24px;
+  --padding-3xl: 32px;
+
+  --radius-xs: 4px;
+  --radius-s: 6px;
+  --radius-m: 8px;
+  --radius-l: 12px;
+  --radius-xl: 16px;
+  --radius-xxl: 24px;
+
+  --shadow-general: 0px 2px 8px 0px rgba(22, 34, 51, 0.04),
+    0px 12px 24px 0px rgba(22, 34, 51, 0.06);
+
+  --bg-toast-danger: oklch(0.9651 0.0141 22.76);
+  --bg-toast-warning: oklch(0.9758 0.0151 61.35);
+  --bg-toast-success: oklch(0.9699 0.0152 145.46);
+  --bg-toast-brand: oklch(0.9656 0.0171 248.01);
+  --bg-toast-info: oklch(1 0 0);
+}
+
+.scroll {
+  overflow: auto;
+  overscroll-behavior: auto;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 4px;
+  padding: 0;
+  background: #f2f2f2;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background-color: oklch(30.54% 0.095 259.07 / 8%);
+  border-radius: 4px;
+  border: 3px solid oklch(30.54% 0.095 259.07 / 8%);
+}
+
+/* Toast styles (Sonner) aligned with Figma design */
+
+.toaster {
+  --toast-border-radius: var(--radius-xxl);
+  --toast-bg: var(--bg-toast-info);
+  --toast-success-bg: var(--bg-toast-success);
+  --toast-error-bg: var(--bg-toast-danger);
+}
+
+.catalog-toast {
+  display: flex;
+  width: 400px;
+  padding: var(--toast_padding, 12px);
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: var(--toast_radius, 12px);
+  background: var(--background-base-cover, var(--bg-base-cover, #fff));
+  box-shadow: 0 2px 8px 0 rgba(22, 34, 51, 0.04), 0 12px 24px 0 rgba(22, 34, 51, 0.06);
+}
+
+.catalog-toast--success {
+  background: var(--background-base-cover, var(--bg-base-cover, #fff));
+}
+
+.catalog-toast--error {
+  background: #feeceb;
+}
+
+.catalog-toast__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.catalog-toast__content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.catalog-toast__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #0c0c0d;
+  color: #0c0c0d;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+  background-color: transparent;
+  line-height: 1;
+}
+
+.catalog-toast--error .catalog-toast__icon {
+  border-color: #e53935;
+  color: #e53935;
+}
+
+.catalog-toast__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.catalog-toast__line {
+  font-family: "PT Root UI VF", sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: #0c0c0d;
+}
+
+.catalog-toast__close {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  color: #86868b;
+  flex-shrink: 0;
+}
+
+.catalog-toast__close:hover {
+  background-color: rgba(13, 45, 94, 0.04);
+  color: #0c0c0d;
+}
+
+/* Context menu block — Figma node 6383-1063 */
+.menu-block {
+  display: flex;
+  width: 300px;
+  max-width: 300px;
+  padding: var(--Padding-menu-block, 4px);
+  flex-direction: column;
+  align-items: flex-start;
+}
