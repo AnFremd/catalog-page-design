@@ -16,6 +16,7 @@ interface SectionTreeProps {
   onSectionNameChange: (sectionId: string, newName: string) => void;
   onResetSectionName: (sectionId: string) => void;
   isCatalogInherited?: boolean;
+  className?: string;
 }
 
 interface SectionMenuState {
@@ -65,7 +66,7 @@ function SectionRow({
   return (
     <div className="flex flex-col w-full">
       <div
-        className={`flex items-center gap-[6px] py-[6px] px-[8px] rounded-[8px] cursor-pointer min-h-[32px] group ${
+        className={`flex items-center gap-[6px] py-[6px] px-[8px] rounded-[8px] cursor-pointer min-h-[44px] md:min-h-[32px] group touch-manipulation ${
           selectedSectionId === section.id ? "bg-[rgba(13,45,94,0.08)]" : "hover:bg-[rgba(13,45,94,0.04)]"
         }`}
         style={{ paddingLeft: `${8 + depth * 16}px` }}
@@ -154,6 +155,7 @@ export function SectionTree({
   onSectionNameChange,
   onResetSectionName,
   isCatalogInherited = true,
+  className = "",
 }: SectionTreeProps) {
   const roots = buildTree(sections, null);
   const [menuState, setMenuState] = useState<SectionMenuState | null>(null);
@@ -185,7 +187,7 @@ export function SectionTree({
   return (
     <div
       ref={containerRef}
-      className="bg-white flex flex-col h-full shrink-0 w-[260px] border-r border-[rgba(13,45,94,0.08)]"
+      className={`bg-white flex flex-col h-full shrink-0 w-full md:w-[260px] border-r border-[rgba(13,45,94,0.08)] ${className}`}
       data-name="Section tree"
     >
       <div

@@ -83,7 +83,7 @@ export function ResetChangesModal({
       aria-labelledby="reset-modal-title"
     >
       <div
-        className="bg-white content-stretch flex flex-col gap-6 items-end p-8 relative rounded-[16px] w-[520px] shadow-[0px_2px_8px_0px_rgba(22,34,51,0.04),0px_12px_24px_0px_rgba(22,34,51,0.06)]"
+        className="bg-white content-stretch flex flex-col gap-6 items-end p-6 md:p-8 relative rounded-[16px] w-[min(520px,calc(100vw-2rem))] max-h-[90dvh] overflow-y-auto shadow-[0px_2px_8px_0px_rgba(22,34,51,0.04),0px_12px_24px_0px_rgba(22,34,51,0.06)]"
         data-name="Сброс локальных изменений"
         onClick={(e) => e.stopPropagation()}
       >

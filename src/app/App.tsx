@@ -1,4 +1,5 @@
-import { useState, useRef, useMemo } from "react";
+import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { CatalogSidebar } from "./components/CatalogSidebar";
 import { SectionTree } from "./components/SectionTree";
 import { InheritanceDropdown } from "./components/InheritanceDropdown";
@@ -8,6 +9,7 @@ import { CatalogTable } from "./components/CatalogTable";
 import type { ProductOverrides, ProductFieldKey } from "./components/CatalogTable";
 import { initialSections, initialProducts, ROOT_SECTION_ID } from "./data/catalogData";
 import { Toaster } from "./components/ui/sonner";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "./components/ui/drawer";
 import { toast } from "sonner";
 import svgPaths from "../imports/svg-woxmq9225x";
 
@@ -33,9 +35,10 @@ interface SectionHeaderTitleProps {
   name: string;
   canEdit: boolean;
   onRename: (newName: string) => void;
+  embedded?: boolean;
 }
 
-function SectionHeaderTitle({ name, canEdit, onRename }: SectionHeaderTitleProps) {
+function SectionHeaderTitle({ name, canEdit, onRename, embedded = false }: SectionHeaderTitleProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(name);
 
@@ -46,10 +49,9 @@ function SectionHeaderTitle({ name, canEdit, onRename }: SectionHeaderTitleProps
     else setValue(name);
   };
 
-  return (
-    <div className="flex items-center justify-between px-[16px] py-[10px] border-b border-[rgba(13,45,94,0.08)]">
-      {isEditing && canEdit ? (
-        <input
+  const content =
+    isEditing && canEdit ? (
+      <input
           className="flex-1 min-w-0 font-['PT_Root_UI_VF:Medium',sans-serif] text-[14px] text-[#222934] bg-white border border-[rgba(13,45,94,0.2)] rounded-[6px] px-[8px] py-[4px] outline-none focus:border-[#007fff]"
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -79,9 +81,8 @@ function SectionHeaderTitle({ name, canEdit, onRename }: SectionHeaderTitleProps
         >
           {name}
         </span>
-      )}
-    </div>
-  );
+    );
+  return embedded ? <>{content}</> : <div className="flex items-center justify-between px-[16px] py-[10px] border-b border-[rgba(13,45,94,0.08)]">{content}</div>;
 }
 
 export default function App() {
@@ -120,6 +121,19 @@ export default function App() {
   const [productOverrides, setProductOverrides] = useState<ProductOverrides>({});
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(ROOT_SECTION_ID);
   const [isResetting, setIsResetting] = useState(false);
+
+  const [isCatalogSidebarCollapsed, setIsCatalogSidebarCollapsed] = useState(false);
+  const [isSectionTreeCollapsed, setIsSectionTreeCollapsed] = useState(false);
+  const [isSectionDrawerOpen, setIsSectionDrawerOpen] = useState(false);
+
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 767px)");
+    const handler = () => setIsMobile(mql.matches);
+    handler();
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
 
   const globeButtonRef = useRef<HTMLDivElement>(null);
 
@@ -179,6 +193,11 @@ export default function App() {
       delete next[sectionId];
       return next;
     });
+  };
+
+  const handleSelectSection = (id: string) => {
+    setSelectedSectionId(id);
+    if (isMobile) setIsSectionDrawerOpen(false);
   };
 
   const handleProductFieldChange = (productId: string, field: ProductFieldKey, value: string) => {
@@ -327,16 +346,30 @@ export default function App() {
   };
 
   return (
-    <div className="bg-[#f5f7fa] flex h-screen w-full overflow-hidden">
+    <div className="bg-[#f6f7f9] flex h-dvh max-h-screen w-full overflow-hidden touch-pan-y" data-name="Каталог. Товары">
+      {isMobile && !isCatalogSidebarCollapsed && (
+        <button
+          type="button"
+          className="fixed inset-0 z-30 bg-black/30 md:hidden"
+          aria-label="Закрыть список каталогов"
+          onClick={() => setIsCatalogSidebarCollapsed(true)}
+        />
+      )}
       <CatalogSidebar
         catalogs={catalogs}
         activeCatalogId={activeCatalogId}
-        onSelectCatalog={setActiveCatalogId}
+        onSelectCatalog={(id) => {
+          setActiveCatalogId(id);
+          if (isMobile) setIsCatalogSidebarCollapsed(true);
+        }}
+        collapsed={isCatalogSidebarCollapsed}
+        onToggleCollapsed={() => setIsCatalogSidebarCollapsed((prev) => !prev)}
+        isMobile={isMobile}
       />
 
-      <div className="flex flex-col flex-1 overflow-hidden min-w-0">
+      <div className="flex flex-col flex-1 overflow-hidden min-w-0 min-h-0">
         <div className="bg-white border-b border-[rgba(13,45,94,0.08)]">
-          <div className="content-stretch flex flex-col items-start relative shrink-0 w-full p-[12px_16px]">
+          <div className="content-stretch flex flex-col items-start relative shrink-0 w-full gap-[8px] px-3 pt-3 pb-3 md:pl-[12px] md:pr-[16px] md:pt-[12px] md:pb-[12px]">
             <div className="relative shrink-0 w-full">
               <div className="flex flex-row items-center size-full">
                 <div className="content-stretch flex items-center justify-between pl-[8px] relative w-full">
@@ -393,62 +426,98 @@ export default function App() {
               </div>
             </div>
 
-            <div className="content-stretch flex gap-[8px] h-[32px] items-center relative shrink-0 w-full mt-[8px]">
-              <div className="h-full relative shrink-0">
-                <div
-                  aria-hidden="true"
-                  className="absolute border-[#007fff] border-b-2 border-solid inset-0 pointer-events-none"
-                />
-                <div className="flex flex-row items-center justify-center size-full">
-                  <div className="content-stretch flex h-full items-center justify-center px-[8px] py-[12px] relative">
-                    <div className="flex flex-col font-['PT_Root_UI_VF:Medium',sans-serif] font-medium justify-center leading-[0] relative shrink-0 text-[#222934] text-[14px] whitespace-nowrap">
-                      <p className="leading-[16px]">Товары</p>
-                    </div>
+            <nav
+              role="tablist"
+              aria-label="Разделы каталога"
+              className="flex gap-[8px] h-[32px] w-full shrink-0 items-center overflow-x-auto overflow-y-hidden flex-nowrap py-1 -mx-1 px-1 touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+              data-name="Tabs line"
+              style={{ WebkitOverflowScrolling: "touch" }}
+            >
+              <div className="relative h-full shrink-0">
+                <span aria-hidden className="absolute inset-0 border-b-2 border-[#007fff] border-solid pointer-events-none" />
+                <div className="flex h-full flex-row items-center justify-center">
+                  <div className="flex h-full items-center justify-center px-[8px] py-[12px]">
+                    <span className="font-['PT_Root_UI_VF',sans-serif] text-[14px] font-medium leading-4 text-[#222934] whitespace-nowrap">
+                      Товары
+                    </span>
                   </div>
                 </div>
               </div>
-              <div className="h-full relative shrink-0 cursor-pointer hover:bg-[rgba(13,45,94,0.04)] rounded-[8px]">
-                <div className="flex flex-row items-center justify-center size-full">
-                  <div className="content-stretch flex h-full items-center justify-center px-[8px] py-[12px] relative">
-                    <div className="flex flex-col font-['PT_Root_UI_VF:Bold',sans-serif] font-semibold justify-center leading-[0] relative shrink-0 text-[14px] text-[rgba(37,52,71,0.84)] whitespace-nowrap">
-                      <p className="leading-[16px]">Настройки</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="content-stretch flex h-[32px] items-center justify-center px-[8px] py-[12px] relative shrink-0 cursor-pointer hover:bg-[rgba(13,45,94,0.04)] rounded-[8px]">
-                <div className="flex flex-col font-['PT_Root_UI_VF:Bold',sans-serif] font-semibold justify-center leading-[0] relative shrink-0 text-[14px] text-[rgba(37,52,71,0.84)] whitespace-nowrap">
-                  <p className="leading-[16px]">Общий доступ</p>
-                </div>
-              </div>
-              <div className="content-stretch flex items-center justify-center px-[8px] py-[12px] relative shrink-0 cursor-pointer hover:bg-[rgba(13,45,94,0.04)] rounded-[8px]">
-                <div className="flex flex-col font-['PT_Root_UI_VF:Bold',sans-serif] font-semibold justify-center leading-[0] relative shrink-0 text-[14px] text-[rgba(37,52,71,0.84)] whitespace-nowrap">
-                  <p className="leading-[16px]">Импорт и Экспорт</p>
-                </div>
-              </div>
-            </div>
+              <button
+                type="button"
+                role="tab"
+                className="flex shrink-0 items-center font-['PT_Root_UI_VF',sans-serif] text-[14px] font-semibold leading-4 text-[rgba(37,52,71,0.84)] hover:text-[#222934] transition-colors px-[8px] py-[12px] whitespace-nowrap"
+              >
+                Настройки
+              </button>
+              <button
+                type="button"
+                role="tab"
+                className="flex shrink-0 items-center font-['PT_Root_UI_VF',sans-serif] text-[14px] font-semibold leading-4 text-[rgba(37,52,71,0.84)] hover:text-[#222934] transition-colors px-[8px] py-[12px] whitespace-nowrap"
+              >
+                Общий доступ
+              </button>
+              <button
+                type="button"
+                role="tab"
+                className="flex shrink-0 items-center font-['PT_Root_UI_VF',sans-serif] text-[14px] font-semibold leading-4 text-[rgba(37,52,71,0.84)] hover:text-[#222934] transition-colors px-[8px] py-[12px] whitespace-nowrap"
+              >
+                Импорт и экспорт
+              </button>
+            </nav>
           </div>
         </div>
 
-        <div className="flex flex-1 overflow-hidden bg-white">
-          <SectionTree
-            sections={sectionsWithOverrides}
-            selectedSectionId={selectedSectionId}
-            onSelectSection={setSelectedSectionId}
-            onSectionNameChange={handleSectionNameChange}
-            onResetSectionName={handleSectionNameReset}
-            isCatalogInherited={isCatalogInherited}
-          />
-
-          <div className="flex flex-1 flex-col overflow-hidden min-w-0">
-            {/* Название раздела, в котором находимся — единственное место, где можно переименовывать раздел */}
-            <SectionHeaderTitle
-              name={sectionDisplayName}
-              canEdit={isCatalogInherited && !!selectedSection}
-              onRename={(newName) => selectedSection && handleSectionNameChange(selectedSection.id, newName)}
+        <div className="flex flex-1 overflow-hidden bg-white flex-col md:flex-row min-h-0">
+          {!isSectionTreeCollapsed && !isMobile && (
+            <SectionTree
+              sections={sectionsWithOverrides}
+              selectedSectionId={selectedSectionId}
+              onSelectSection={handleSelectSection}
+              onSectionNameChange={handleSectionNameChange}
+              onResetSectionName={handleSectionNameReset}
+              isCatalogInherited={isCatalogInherited}
+              className="max-h-[40vh] md:max-h-none border-b md:border-b-0 border-[rgba(13,45,94,0.08)]"
             />
-
-            <div className="flex-1 overflow-auto">
+          )}
+          <div className="flex flex-1 flex-col overflow-hidden min-w-0 min-h-0">
+            <div className="flex-1 overflow-auto overflow-x-auto min-h-0">
+              <div className="sticky top-0 z-10 flex items-center gap-2 px-3 py-2 md:px-[16px] md:py-[10px] border-b border-[rgba(13,45,94,0.08)] bg-white">
+                <button
+                  type="button"
+                  className="flex shrink-0 items-center justify-center min-h-[44px] min-w-[44px] w-11 h-11 rounded-[8px] hover:bg-[rgba(13,45,94,0.04)] active:bg-[rgba(13,45,94,0.08)] text-[rgba(13,45,94,0.56)] touch-manipulation"
+                  aria-label={isMobile ? "Выбрать раздел" : isSectionTreeCollapsed ? "Показать дерево разделов" : "Свернуть дерево разделов"}
+                  onClick={() => (isMobile ? setIsSectionDrawerOpen(true) : setIsSectionTreeCollapsed((prev) => !prev))}
+                >
+                  {isMobile ? (
+                    <ChevronDown className="size-5 shrink-0" aria-hidden />
+                  ) : isSectionTreeCollapsed ? (
+                    <ChevronRight className="size-5 shrink-0" aria-hidden />
+                  ) : (
+                    <ChevronLeft className="size-5 shrink-0" aria-hidden />
+                  )}
+                </button>
+                {isMobile ? (
+                  <button
+                    type="button"
+                    className="flex flex-1 min-w-0 items-center text-left touch-manipulation min-h-[44px]"
+                    onClick={() => setIsSectionDrawerOpen(true)}
+                  >
+                    <span className="font-['PT_Root_UI_VF:Medium',sans-serif] text-[14px] text-[#222934] truncate">
+                      {sectionDisplayName}
+                    </span>
+                  </button>
+                ) : (
+                  <div className="flex flex-1 min-w-0 items-center justify-between">
+                    <SectionHeaderTitle
+                      name={sectionDisplayName}
+                      canEdit={isCatalogInherited && !!selectedSection}
+                      onRename={(newName) => selectedSection && handleSectionNameChange(selectedSection.id, newName)}
+                      embedded
+                    />
+                  </div>
+                )}
+              </div>
               <CatalogTable
                 products={productsForSection}
                 productOverrides={productOverrides}
@@ -458,6 +527,28 @@ export default function App() {
             </div>
           </div>
         </div>
+
+        {/* На мобильных: выбор раздела в drawer — не нужно скроллить вверх */}
+        <Drawer open={isSectionDrawerOpen} onOpenChange={setIsSectionDrawerOpen}>
+          <DrawerContent direction="bottom" className="max-h-[85vh] flex flex-col">
+            <DrawerHeader className="border-b border-[rgba(13,45,94,0.08)]">
+              <DrawerTitle className="font-['PT_Root_UI_VF:Medium',sans-serif] text-[14px] text-[#222934]">
+                Выберите раздел
+              </DrawerTitle>
+            </DrawerHeader>
+            <div className="overflow-auto flex-1 min-h-0 px-2 pb-4">
+              <SectionTree
+                sections={sectionsWithOverrides}
+                selectedSectionId={selectedSectionId}
+                onSelectSection={handleSelectSection}
+                onSectionNameChange={handleSectionNameChange}
+                onResetSectionName={handleSectionNameReset}
+                isCatalogInherited={isCatalogInherited}
+                className="border-0"
+              />
+            </div>
+          </DrawerContent>
+        </Drawer>
       </div>
 
       {activeCatalog?.isInherited && (

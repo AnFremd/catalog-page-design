@@ -128,7 +128,7 @@ export function CatalogTable({
   const bodyCellPad = ""; // для редактируемых ячеек вертикальные отступы внутри EditableCell
 
   return (
-    <div className="flex flex-col w-full overflow-auto">
+    <div className="flex flex-col w-full min-w-0 overflow-auto touch-pan-x">
       {/* Table Header */}
       <div
         className="flex h-[48px] shrink-0 sticky top-0 bg-white z-10 border-b border-[#ebeef2]"

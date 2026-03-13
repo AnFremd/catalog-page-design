@@ -62,7 +62,7 @@ export function ConfirmationModal({
       aria-busy={isSubmitting}
     >
       <div
-        className="bg-white content-stretch flex flex-col gap-[24px] items-end p-[32px] relative rounded-[16px] shadow-[0px_2px_8px_0px_rgba(22,34,51,0.04),0px_12px_24px_0px_rgba(22,34,51,0.06)] w-[540px]"
+        className="bg-white content-stretch flex flex-col gap-[24px] items-end p-6 md:p-[32px] relative rounded-[16px] shadow-[0px_2px_8px_0px_rgba(22,34,51,0.04),0px_12px_24px_0px_rgba(22,34,51,0.06)] w-[min(540px,calc(100vw-2rem))] max-h-[90dvh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="content-stretch flex flex-col gap-[24px] items-start overflow-clip relative shrink-0 w-full">
